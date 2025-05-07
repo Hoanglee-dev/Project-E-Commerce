@@ -5,7 +5,8 @@ export default function Login() {
   return (
     <div className='bg-orange'>
       <div className='max-w-7xl mx-auto py-5'>
-        <div className=' grid grid-cols-1 px-5 lg:grid-cols-12 lg:py-11 lg:pr-16'>
+        <div className=' grid grid-cols-1 px-5 lg:grid-cols-12 lg:py-11 lg:pr-16 '>
+          <div className='lg:col-span-4'></div>
           <div className='lg:col-span-4 lg:col-start-8'>
             <form className='bg-white shadow-sm p-8 rounded' noValidate>
               <div className='text-2xl'>Đăng nhập</div>

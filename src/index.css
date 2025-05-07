@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @theme {
   --color-orange: #ee4d2d;
+  --color-red: rgb(208, 1, 27);
 }
 @layer base {
   .container {
