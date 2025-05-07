@@ -12,7 +12,10 @@ export const schema = yup.object({
     .required('password là bắt buộc')
     .min(6, 'Độ dài từ 6 - 60 kí tự')
     .max(160, 'Độ dài từ 6 - 60 kí tự'),
-  confirm_password: yup.string().oneOf([yup.ref('password')], 'Nhập lại password không khớp')
+  confirm_password: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Nhập lại password không khớp')
+    .required('password là bắt buộc')
 })
 
 const loginSchema = schema.omit(['confirm_password'])
