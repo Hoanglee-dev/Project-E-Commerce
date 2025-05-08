@@ -4,14 +4,14 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { useForm } from 'react-hook-form'
 import Input from '~/components/Input'
-import { schema, registerSchema } from '~/utils/rules'
+import { RegisterSchema, schema } from '~/utils/rules'
 import { useMutation } from '@tanstack/react-query'
 import { registerAccount } from '~/apis/auth.api'
 import { omit } from 'lodash'
 import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
 import { ResponseApi } from '~/types/utils.type'
 
-type FormData = registerSchema
+type FormData = RegisterSchema
 
 export default function Register() {
   const {
