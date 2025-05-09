@@ -1,11 +1,26 @@
 import { Link } from 'react-router-dom'
+import Poppover from '../Poppover'
 
 export default function Header() {
   return (
     <div className='pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)]'>
       <div className='max-w-7xl mx-auto px-4'>
-        <div className='flex justify-end items-center text-sm text-white'>
-          <div className='flex items-center py-1 hover:text-gray-300 cursor-pointer'>
+        <div className='flex justify-end text-sm text-white'>
+          <Poppover
+            className='flex items-center py-1 hover:text-gray-300 cursor-pointer'
+            renderPopover={
+              <div className='bg-white relative shadow-md  border border-gray-200 text-sm'>
+                <div className='flex flex-col w-32'>
+                  <button className='py-2 px-3 block text-black hover:text-orange text-start hover:bg-slate-100'>
+                    Tiếng Việt
+                  </button>
+                  <button className='py-2 px-3 text-black hover:text-orange mt-2 text-start hover:bg-slate-100'>
+                    English
+                  </button>
+                </div>
+              </div>
+            }
+          >
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -31,15 +46,32 @@ export default function Header() {
             >
               <path strokeLinecap='round' strokeLinejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5' />
             </svg>
-          </div>
-          <div className='w-5 h-5 mr-2 flex-shsink-0 ml-6'>
-            <img
-              src='https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-              alt=''
-              className='w-full h-full object-cover rounded-full'
-            />
-          </div>
-          <div className=''></div>
+          </Poppover>
+          <Poppover
+            className='flex items-center py-1 hover:text-gray-300 cursor-pointer'
+            renderPopover={
+              <div className='bg-white shadow-md text-sm'>
+                <Link to='/' className=' w-full block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
+                  Tài khoản của tôi
+                </Link>
+                <Link to='/' className='  w-full block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
+                  Đơn mua
+                </Link>
+                <button className='text-left w-full block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
+                  Đăng xuất
+                </button>
+              </div>
+            }
+          >
+            <div className='w-5 h-5 mr-2 flex-shsink-0 ml-6'>
+              <img
+                src='https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+                alt=''
+                className='w-full h-full object-cover rounded-full'
+              />
+            </div>
+            <div className=''></div>
+          </Poppover>
 
           <div className=' flex items-center'>
             <Link to='/register' className='mx-3 capitalize hover:text-white/70 '>
@@ -85,22 +117,112 @@ export default function Header() {
             </div>
           </form>
           <div className='col-span-1 justify-self-start col-start-11 ml-9'>
-            <Link to='/' className='flex justify-end'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth={1.5}
-                stroke='currentColor'
-                className='size-7 text-white'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
-                />
-              </svg>
-            </Link>
+            <Poppover
+              renderPopover={
+                <div className='bg-white relative shadow-sm rounded-sm border border-gray-200 max-w-[400px] text-sm'>
+                  <div className='p-2'>
+                    <div className='text-gray-400 capitalize'>Sản phảm mới thêm</div>
+                    <div className='mt-5'>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img
+                            className='w-11 h-11 object-cover'
+                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m1iao3o80klv66@resize_w160_nl.webp'
+                            alt='anh'
+                          />
+                        </div>
+                        <div className='ml-2 flex-grow overflow-hidden'>
+                          <div className='truncate'>
+                            Vòng tay chuỗi 108 hạt trầm hương sánh chìm Sơn Mộc Hương đeo tay nam nữ phong thủy may mắn
+                            tài lộc
+                          </div>
+                        </div>
+                        <div className='ml-2 flex-shrink-0'>
+                          <span className='text-orange'>₫928.000</span>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img
+                            className='w-11 h-11 object-cover'
+                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m1iao3o80klv66@resize_w160_nl.webp'
+                            alt='anh'
+                          />
+                        </div>
+                        <div className='ml-2 flex-grow overflow-hidden'>
+                          <div className='truncate'>
+                            Vòng tay chuỗi 108 hạt trầm hương sánh chìm Sơn Mộc Hương đeo tay nam nữ phong thủy may mắn
+                            tài lộc
+                          </div>
+                        </div>
+                        <div className='ml-2 flex-shrink-0'>
+                          <span className='text-orange'>₫928.000</span>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img
+                            className='w-11 h-11 object-cover'
+                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m1iao3o80klv66@resize_w160_nl.webp'
+                            alt='anh'
+                          />
+                        </div>
+                        <div className='ml-2 flex-grow overflow-hidden'>
+                          <div className='truncate'>
+                            Vòng tay chuỗi 108 hạt trầm hương sánh chìm Sơn Mộc Hương đeo tay nam nữ phong thủy may mắn
+                            tài lộc
+                          </div>
+                        </div>
+                        <div className='ml-2 flex-shrink-0'>
+                          <span className='text-orange'>₫928.000</span>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='flex-shrink-0'>
+                          <img
+                            className='w-11 h-11 object-cover'
+                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m1iao3o80klv66@resize_w160_nl.webp'
+                            alt='anh'
+                          />
+                        </div>
+                        <div className='ml-2 flex-grow overflow-hidden'>
+                          <div className='truncate'>
+                            Vòng tay chuỗi 108 hạt trầm hương sánh chìm Sơn Mộc Hương đeo tay nam nữ phong thủy may mắn
+                            tài lộc
+                          </div>
+                        </div>
+                        <div className='ml-2 flex-shrink-0'>
+                          <span className='text-orange'>₫928.000</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='mt-6 items-center flex justify-between'>
+                      <div className='capitalize text-xs text-gray-500'>Thêm vào giỏ hàng</div>
+                      <button className='capitalize bg-orange hover:bg-opacity-80 px-4 py-2 rounded-sm text-white '>
+                        Xem giỏ hàng
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+            >
+              <Link to='/' className='flex justify-end'>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth={1.5}
+                  stroke='currentColor'
+                  className='size-7 text-white'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
+                  />
+                </svg>
+              </Link>
+            </Poppover>
           </div>
         </div>
       </div>
