@@ -1,16 +1,20 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { data, Link } from 'react-router-dom'
+import { data, Link, useNavigate } from 'react-router-dom'
 import { login } from '~/apis/auth.api'
 import Input from '~/components/Input'
-import { ResponseApi } from '~/types/utils.type'
-import { loginSchema, LoginSchema, schema } from '~/utils/rules'
+import { AppContext } from '~/contexts/app.context'
+import { ErrorResponse } from '~/types/utils.type'
+import { loginSchema, LoginSchema } from '~/utils/rules'
 import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
 
 type FormData = LoginSchema
 
 export default function Login() {
+  const { setIsAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
   const {
     register,
     setError,
@@ -24,14 +28,14 @@ export default function Login() {
 
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
-      onSuccess: (data) => {
-        console.log(data)
+      onSuccess: () => {
+        setIsAuthenticated(true)
+        navigate('/')
       },
       onError: (error) => {
-        if (isAxiosErrorUnprocessableEntity<ResponseApi<FormData>>(error)) {
+        if (isAxiosErrorUnprocessableEntity<ErrorResponse<FormData>>(error)) {
           const formError = error.response?.data.data
           if (formError) {
-            console.log('🚀 ~ onSubmit ~ formError:', formError.email)
             Object.keys(formError).forEach((key) => {
               console.log(key)
               setError(key as keyof FormData, {
