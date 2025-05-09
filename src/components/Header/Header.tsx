@@ -51,7 +51,7 @@ export default function Header() {
             className='flex items-center py-1 hover:text-gray-300 cursor-pointer'
             renderPopover={
               <div className='bg-white shadow-md text-sm'>
-                <Link to='/' className=' w-full block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
+                <Link to='/profile' className=' w-full block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
                   Tài khoản của tôi
                 </Link>
                 <Link to='/' className='  w-full block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
@@ -72,16 +72,6 @@ export default function Header() {
             </div>
             <div className=''></div>
           </Poppover>
-
-          <div className=' flex items-center'>
-            <Link to='/register' className='mx-3 capitalize hover:text-white/70 '>
-              Đăng kí
-            </Link>
-            <div className='border-r-[1px] border-r-white/40 h-4'></div>
-            <Link to='/login' className='mx-3 capitalize hover:text-white/70 '>
-              Đăng Nhập
-            </Link>
-          </div>
         </div>
         <div className='grid grid-cols-12 gap-4 mt-4 items-end '>
           <Link to='/' className='col-span-2 '>
