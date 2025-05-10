@@ -1,6 +1,7 @@
 import axios, { type AxiosInstance } from 'axios'
 import { AuthResponse } from '~/types/auth.type'
-import { clearAccessTokenFromLS, getAccessTokenFromLS, setAccessTokenToLS } from './auth'
+import { clearFromLS, getAccessTokenFromLS, setAccessTokenToLS, setProfileUserToLS } from './auth'
+import path from '~/constants/path'
 class HTTP {
   instance: AxiosInstance
   private accessToken: string
@@ -30,14 +31,15 @@ class HTTP {
       (response) => {
         console.log('🚀 ~ HTTP ~ constructor ~ response:', response)
         const { url } = response.config
-        if (url === '/login' || url === '/register') {
+        if (url === path.login || url === path.register) {
           const data = response.data as AuthResponse
           this.accessToken = data.data.access_token
           setAccessTokenToLS(this.accessToken)
-        } else if (url === '/logout') {
+          setProfileUserToLS(data.data.user)
+        } else if (url === path.logout) {
           console.log('logout http')
           this.accessToken = ''
-          clearAccessTokenFromLS()
+          clearFromLS()
         }
         // Any status code that lie within the range of 2xx cause this function to trigger
         // Do something with response data
