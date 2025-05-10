@@ -15,7 +15,7 @@ export default function Header() {
   })
 
   const handleLogout = () => {
-    console.log('logout')
+    console.log('handleLogout >> logout')
     logoutMutaton.mutate()
   }
 
