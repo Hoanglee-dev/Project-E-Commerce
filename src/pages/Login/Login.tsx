@@ -2,10 +2,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { data, Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { login } from '~/apis/auth.api'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
+import path from '~/constants/path'
 import { AppContext } from '~/contexts/app.context'
 import { ErrorResponse } from '~/types/utils.type'
 import { loginSchema, LoginSchema } from '~/utils/rules'
@@ -14,7 +15,7 @@ import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
 type FormData = LoginSchema
 
 export default function Login() {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
   const {
     register,
@@ -29,8 +30,9 @@ export default function Login() {
 
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setIsAuthenticated(true)
+        setProfile(data.data.data.user)
         navigate('/')
       },
       onError: (error) => {
@@ -84,7 +86,7 @@ export default function Login() {
               </div>
               <div className='flex items-center justify-center mt-8'>
                 <span className='text-slate-400 ml-1'> Bạn đã có tài khoản chưa?</span>
-                <Link to='/register' className='text-red-400 px-2'>
+                <Link to={path.register} className='text-red-400 px-2'>
                   Đăng ký
                 </Link>
               </div>
