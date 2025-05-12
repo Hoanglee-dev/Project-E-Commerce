@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import Input from '~/components/Input'
 import { RegisterSchema, schema } from '~/utils/rules'
 import { useMutation } from '@tanstack/react-query'
-import { registerAccount } from '~/apis/auth.api'
+import { authApi } from '~/apis/auth.api'
 import { omit } from 'lodash'
 import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
 import { ErrorResponse } from '~/types/utils.type'
@@ -27,7 +27,7 @@ export default function Register() {
   } = useForm<FormData>({ resolver: yupResolver(schema) })
 
   const registerAccountMutation = useMutation({
-    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
   })
 
   const onSubmit = handleSubmit((data) => {
