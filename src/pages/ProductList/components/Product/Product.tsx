@@ -1,50 +1,63 @@
 import { Link } from 'react-router-dom'
+import { Product as ProductType } from '~/types/product.type'
+import { formatCurrency, formatNumberToSocialStyle } from '~/utils/utils'
+import ProductRating from '../ProductRating'
 
-export default function Product() {
+interface Props {
+  product: ProductType
+}
+
+export default function Product(product: Props) {
+  const { image, name, price_before_discount, price, sold, rating } = product.product
   return (
     <Link to={'/'}>
       <div className='h-full  rounded-md overflow-hidden bg-white shadow-sm hover:translate-y-[-0.065rem] hover:shadow-md duration-100 transition-transform '>
         <div className='w-full pt-[100%] relative'>
-          <img
-            className=' absolute top-0 left-0 bg-white w-full h-full object-cover'
-            src='https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lrsmvmor7r9g15.webp'
-          />
+          <img className=' absolute top-0 left-0 bg-white w-full h-full object-cover' src={image} />
         </div>
         <div className='p-2 overflow-hidden'>
-          <div className='min-h-[1.75rem] line-clamp-2 text-sm'>
-            Thắt Lưng Nam Khóa Tự Động Cao Cấp Mặt Xoay Chính Hãng , Dây Nịt Nam Phong Cách Hàn Quốc
-          </div>
-
-          <div className='mt-2 pointer-events-none overflow-hidden h-4 flex-grow-0 flex-shrink-1 flex flex-row justify-start items-stretch'>
-            <svg xmlns='http://www.w3.org/2000/svg' viewBox='-0.5 -0.5 4 16' className='flex-none h-full -mr-px'>
-              <path
-                d='M4 0h-3q-1 0 -1 1a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3q0 1 1 1h3'
-                strokeWidth={1}
-                stroke='#F69113'
-                fill='#F69113'
-              />
-            </svg>
-            <div className='truncate bg-[#F69113] text-white leading-4 text-xs  px-px'>Giảm ₫1k</div>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='-0.5 -0.5 4 16'
-              className='rotate-180 flex-none h-full -ml-px'
-            >
-              <path
-                d='M4 0h-3q-1 0 -1 1a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3v0.333a1.2 1.5 0 0 1 0 3q0 1 1 1h3'
-                strokeWidth={1}
-                stroke='#F69113'
-                fill='#F69113'
-              />
-            </svg>
-          </div>
-          <div className='mb-2 mt-2 flex items-center justify-between space-x-1'>
-            <div className='text-orange truncate ml-1'>
+          <div className='min-h-[1.75rem] line-clamp-2 text-sm'>{name}</div>
+          <div className='mb-2 mt-2 flex items-center  space-x-1'>
+            <div className=' line-through max-w-[50%] text-sm text-gray-500 truncate ml-1'>
               <span className='text-xs'>₫</span>
-              <span>1000</span>
+              <span>{formatCurrency(price_before_discount)}</span>
             </div>
-
-            <div className='truncate text-shopee-black87 text-sm min-h-4 text-center'>Đã bán</div>
+            <div className='text-orange truncate ml-1 text-sm'>
+              <span className='text-xs'>₫</span>
+              <span>{formatCurrency(price)}</span>
+            </div>
+          </div>
+          <div className='truncate text-shopee-black87 flex justify-between items-center text-sm  min-h-4 '>
+            <div className='flex'>
+              {/* <svg viewBox='0 0 9.5 8' className='w-4 h-4 mr-1'>
+                <defs>
+                  <linearGradient id='ratingStarGradient' x1='50%' x2='50%' y1='0%' y2='100%'>
+                    <stop offset={0} stopColor='#ffca11' />
+                    <stop offset={1} stopColor='#ffad27' />
+                  </linearGradient>
+                  <polygon
+                    id='ratingStar'
+                    points='14.910357 6.35294118 12.4209136 7.66171903 12.896355 4.88968305 10.8823529 2.92651626 13.6656353 2.52208166 14.910357 0 16.1550787 2.52208166 18.9383611 2.92651626 16.924359 4.88968305 17.3998004 7.66171903'
+                  />
+                </defs>
+                <g fill='url(#ratingStarGradient)' fillRule='evenodd' stroke='none' strokeWidth={1}>
+                  <g transform='translate(-876 -1270)'>
+                    <g transform='translate(155 992)'>
+                      <g transform='translate(600 29)'>
+                        <g transform='translate(10 239)'>
+                          <g transform='translate(101 10)'>
+                            <use stroke='#ffa727' strokeWidth='.5' xlinkHref='#ratingStar' />
+                          </g>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg> */}
+              <ProductRating rating={rating} />
+              {/* <p className='text-sm'>{rating}</p> */}
+            </div>
+            Đã bán {formatNumberToSocialStyle(sold)}
           </div>
         </div>
       </div>
