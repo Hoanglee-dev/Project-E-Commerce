@@ -2,33 +2,17 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import AsideFilter from './components/AsideFilter'
 import Product from './components/Product/Product'
 import SortProductList from './components/SortProductList'
-import { useQueryParams } from '~/hooks/useQueryParam'
 import productApi from '~/apis/product.api'
 import Pagination from '~/components/Pagination/Pagination'
 import { ProductListConfig } from '~/types/product.type'
-import { isUndefined, omitBy } from 'lodash'
+import useQueryConfig from '~/hooks/useQueryConfig'
 
 export type QueryConfig = {
   [key in keyof ProductListConfig]: string
 }
 
 export default function ProductList() {
-  const queryParams: QueryConfig = useQueryParams()
-  const queryConfig: QueryConfig = omitBy(
-    {
-      page: queryParams.page || '1',
-      limit: queryParams.limit || 5,
-      exclude: queryParams.exclude,
-      name: queryParams.name,
-      order: queryParams.order,
-      price_max: queryParams.price_max,
-      price_min: queryParams.price_min,
-      rating_filter: queryParams.rating_filter,
-      sort_by: queryParams.sort_by,
-      category: queryParams.category
-    },
-    isUndefined
-  )
+  const queryConfig: QueryConfig = useQueryConfig()
   console.log('🚀 ~ ProductList ~ queryConfig:', queryConfig)
   const { data } = useQuery({
     queryKey: ['products', queryConfig],
@@ -48,7 +32,7 @@ export default function ProductList() {
               <AsideFilter />
             </div>
             <div className='col-span-10 pl-3'>
-              <SortProductList />
+              <SortProductList queryConfig={queryConfig} totalPage={data.data.data.pagination.page_size} />
               <div className='mt-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 '>
                 {data.data.data.products.map((product) => (
                   <div className='col-span-1' key={product._id}>

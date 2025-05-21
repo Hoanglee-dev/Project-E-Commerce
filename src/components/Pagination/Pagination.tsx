@@ -122,7 +122,7 @@ export default function Pagination({ totalPage, queryConfig }: Props) {
           </Link>
         )}
       </div>
-      <div className='hidden sm:flex sm:flex-1 sm:items-center sm:justify-between'>
+      <div className='hidden sm:flex sm:flex-1 sm:items-center sm:justify-end'>
         <nav aria-label='Pagination' className='isolate inline-flex justify-end -space-x-px rounded-md shadow-xs'>
           {currentPage === 1 ? (
             <span className='relative cursor-not-allowed inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0'>
