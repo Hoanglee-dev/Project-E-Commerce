@@ -1,4 +1,21 @@
-export default function RatingStar() {
+import { createSearchParams, useNavigate } from 'react-router-dom'
+import { QueryConfig } from '~/hooks/useQueryConfig'
+
+interface Props {
+  queryConfig: QueryConfig
+}
+export default function RatingStar({ queryConfig }: Props) {
+  const navigate = useNavigate()
+
+  const handleFilterStar = (indexStar: number) => {
+    navigate({
+      pathname: '/',
+      search: createSearchParams({
+        ...queryConfig,
+        rating_filter: String(indexStar)
+      }).toString()
+    })
+  }
   return (
     <div>
       <ul className='my-3'>
@@ -7,7 +24,11 @@ export default function RatingStar() {
           .map((_, index) => {
             return (
               <li className='py-1 pl-2' key={index}>
-                <div className='flex items-center text-sm hover:cursor-pointer' tabIndex={0}>
+                <button
+                  className='flex items-center text-sm hover:cursor-pointer'
+                  onClick={() => handleFilterStar(5 - index)}
+                  tabIndex={0}
+                >
                   {Array(5)
                     .fill(0)
                     .map((_, indexStar) => {
@@ -59,7 +80,7 @@ export default function RatingStar() {
                       )
                     })}
                   {index > 0 && <span className='pt-1'>Trở lên</span>}
-                </div>
+                </button>
               </li>
             )
           })}

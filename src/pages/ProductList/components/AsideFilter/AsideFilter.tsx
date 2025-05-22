@@ -1,10 +1,12 @@
-import { createSearchParams, Link } from 'react-router-dom'
+import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
 import RatingStar from '../RatingStar/Ratingstar'
 import { Category } from '~/types/category.type'
 import { QueryConfig } from '~/hooks/useQueryConfig'
 import classNames from 'classnames'
+import { omit } from 'lodash'
+import path from '~/constants/path'
 
 interface Props {
   categories: Category[]
@@ -12,10 +14,15 @@ interface Props {
 }
 
 export default function AsideFilter({ categories, queryConfig }: Props) {
-  console.log('🚀 ~ AsideFilter ~ categories:', categories)
+  const navigate = useNavigate()
   const { category } = queryConfig
-  console.log('🚀 ~ AsideFilter ~ category:', category)
-
+  const handleRemoveAll = () => {
+    console.log('clear')
+    navigate({
+      pathname: path.home,
+      search: createSearchParams(omit(queryConfig, ['category', 'rating_filter'])).toString()
+    })
+  }
   return (
     <div className='py-4 '>
       <Link
@@ -128,12 +135,15 @@ export default function AsideFilter({ categories, queryConfig }: Props) {
         </form>
         <div className='bg-gray-300 h-[1px] my-4' />
         <div className='text-sm font-semibold'>Đánh giá</div>
-        <RatingStar />
+        <RatingStar queryConfig={queryConfig} />
 
         <div className='bg-gray-300 h-[1px] my-4' />
-        <Button className=' w-full p-2 uppercase bg-orange text-white text-sm hover:bg-orange/80 flex justify-center items-center hover:cursor-pointer'>
+        <button
+          onClick={handleRemoveAll}
+          className=' w-full p-2 uppercase bg-orange text-white text-sm hover:bg-orange/80 flex justify-center items-center hover:cursor-pointer'
+        >
           Xoá tất cả
-        </Button>
+        </button>
       </div>
     </div>
   )
