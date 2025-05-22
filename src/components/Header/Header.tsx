@@ -1,13 +1,29 @@
-import { Link } from 'react-router-dom'
+import { createSearchParams, data, Link, useNavigate } from 'react-router-dom'
 import Poppover from '../Poppover'
 import { useMutation } from '@tanstack/react-query'
 import { authApi } from '~/apis/auth.api'
 import { AppContext } from '~/contexts/app.context'
 import { useContext } from 'react'
 import path from '~/constants/path'
+import useQueryConfig, { QueryConfig } from '~/hooks/useQueryConfig'
+import { useForm } from 'react-hook-form'
+import { Schema, schema } from '~/utils/rules'
+import { omit, pick } from 'lodash'
+import { yupResolver } from '@hookform/resolvers/yup'
 
+type FormData = Pick<Schema, 'name'>
+const nameSchema = schema.pick(['name'])
 export default function Header() {
+  const navigate = useNavigate()
   const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
+  const queryConfig: QueryConfig = useQueryConfig()
+
+  const { register, handleSubmit } = useForm<FormData>({
+    defaultValues: {
+      name: ''
+    },
+    resolver: yupResolver(nameSchema)
+  })
   const logoutMutaton = useMutation({
     mutationFn: authApi.logout,
     onSuccess: () => {
@@ -20,6 +36,26 @@ export default function Header() {
     console.log('handleLogout >> logout')
     logoutMutaton.mutate()
   }
+
+  const handleSearch = handleSubmit((data) => {
+    const config = queryConfig.order
+      ? omit(
+          {
+            ...queryConfig,
+            name: data.name
+          },
+          ['order', 'sort_by']
+        )
+      : {
+          ...queryConfig,
+          name: data.name
+        }
+
+    navigate({
+      pathname: path.home,
+      search: createSearchParams(config).toString()
+    })
+  })
 
   return (
     <div className='pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)]'>
@@ -118,9 +154,10 @@ export default function Header() {
               </g>
             </svg>
           </Link>
-          <form className='col-span-8 col-start-3'>
+          <form className='col-span-8 col-start-3' onSubmit={handleSearch}>
             <div className='bg-white rounded-sm p-1 flex'>
               <input
+                {...register('name')}
                 type='text'
                 className='text-black px-3 py-2 flex-grow border-none outline-none bg-transparent text-sm'
                 placeholder='FREESHIP ĐƠN TỪ 0Đ'

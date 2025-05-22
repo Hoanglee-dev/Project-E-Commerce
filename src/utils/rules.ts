@@ -15,9 +15,11 @@ export const schema = yup.object({
   confirm_password: yup
     .string()
     .oneOf([yup.ref('password')], 'Nhập lại password không khớp')
-    .required('password là bắt buộc')
+    .required('password là bắt buộc'),
+  name: yup.string().trim().required('Nhập tên sản phẩm là bắt buộc')
 })
 
 export const loginSchema = schema.omit(['confirm_password'])
+export type Schema = yup.InferType<typeof schema>
 export type LoginSchema = yup.InferType<typeof loginSchema>
 export type RegisterSchema = yup.InferType<typeof schema>
