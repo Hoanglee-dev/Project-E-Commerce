@@ -29,7 +29,6 @@ class HTTP {
 
     this.instance.interceptors.response.use(
       (response) => {
-        console.log('🚀 ~ HTTP ~ constructor ~ response:', response)
         const { url } = response.config
         if (url === path.login || url === path.register) {
           const data = response.data as AuthResponse
