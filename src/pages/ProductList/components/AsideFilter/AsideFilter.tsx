@@ -1,12 +1,29 @@
-import { Link } from 'react-router-dom'
+import { createSearchParams, Link } from 'react-router-dom'
 import Button from '~/components/Button'
 import Input from '~/components/Input'
 import RatingStar from '../RatingStar/Ratingstar'
+import { Category } from '~/types/category.type'
+import { QueryConfig } from '~/hooks/useQueryConfig'
+import classNames from 'classnames'
 
-export default function AsideFilter() {
+interface Props {
+  categories: Category[]
+  queryConfig: QueryConfig
+}
+
+export default function AsideFilter({ categories, queryConfig }: Props) {
+  console.log('🚀 ~ AsideFilter ~ categories:', categories)
+  const { category } = queryConfig
+  console.log('🚀 ~ AsideFilter ~ category:', category)
+
   return (
     <div className='py-4 '>
-      <Link to='' className='flex items-center font-bold'>
+      <Link
+        to=''
+        className={classNames('flex items-center font-bold', {
+          ' text-orange': !category
+        })}
+      >
         <svg viewBox='0 0 12 10' className='w-3 h-4 mr-3 fill-current'>
           <g fillRule='evenodd' stroke='none' strokeWidth={1}>
             <g transform='translate(-373 -208)'>
@@ -24,14 +41,32 @@ export default function AsideFilter() {
       </Link>
       <div className='bg-gray-300 h-[1px] my-4' />
       <ul>
-        <li className='py-2 pl-2'>
-          <Link to={''} className={'relative px-2 text-orange'}>
-            <svg viewBox='0 0 4 7' className='fill-orange h-2 w-2 absolute top-1 left-[-10px]'>
-              <polygon points='4 3.5 0 0 0 7' />
-            </svg>
-            Thời trang nam
-          </Link>
-        </li>
+        {categories.map((categoryItems) => {
+          const isActive = category === categoryItems._id
+          return (
+            <li className='py-2 pl-2' key={categoryItems._id}>
+              <Link
+                to={{
+                  pathname: '/',
+                  search: createSearchParams({
+                    ...queryConfig,
+                    category: categoryItems._id
+                  }).toString()
+                }}
+                className={classNames('relative px-2 font-medium ', {
+                  'text-orange font-semibold': isActive
+                })}
+              >
+                {isActive && (
+                  <svg viewBox='0 0 4 7' className='fill-orange h-2 w-2 absolute top-1 left-[-10px]'>
+                    <polygon points='4 3.5 0 0 0 7' />
+                  </svg>
+                )}
+                {categoryItems.name}
+              </Link>
+            </li>
+          )
+        })}
       </ul>
       <Link to='/home' className='flex items-center font-bold mt-4 uppercase'>
         <svg
