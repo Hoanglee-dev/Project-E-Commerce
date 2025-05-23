@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom'
-
 import { formatCurrency, formatNumberToSocialStyle, rateSale } from '~/utils/utils'
 import { useQuery } from '@tanstack/react-query'
 import productApi from '~/apis/product.api'
@@ -11,6 +10,7 @@ import Product from '../ProductList/components/Product/Product'
 
 export default function ProductDetail() {
   const { id } = useParams()
+  const [buyCount, setBuyCount] = useState(1)
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
   const [activeImage, setActiveImage] = useState('')
   const { data: productDetailData } = useQuery({
@@ -51,6 +51,10 @@ export default function ProductDetail() {
     if (currentIndexImages[0] > 0) {
       setCurrentIndexImages((prev) => [prev[0] - 1, prev[1] - 1])
     }
+  }
+
+  const handleBuyCount = (value: number) => {
+    setBuyCount(value)
   }
 
   if (!product) return null
@@ -136,7 +140,13 @@ export default function ProductDetail() {
               </div>
               <div className='mt-8 flex items-center'>
                 <div className='capitalize text-gray-500'>Số lượng</div>
-                <QuantityController max={product.quantity} />
+                <QuantityController
+                  onIncrease={handleBuyCount}
+                  onDecrease={handleBuyCount}
+                  value={buyCount}
+                  onType={handleBuyCount}
+                  max={product.quantity}
+                />
                 <div className='ml-6 text-sm text-gray-500'>{product.quantity} sản phẩm có sẵn</div>
               </div>
               <div className='mt-8 flex items-center'>

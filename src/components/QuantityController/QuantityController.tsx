@@ -9,10 +9,47 @@ interface Props extends InputNumberProps {
   classNameWrapper?: string
 }
 
-export default function QuantityController({ classNameWrapper = 'ml-6', value }: Props) {
+export default function QuantityController({
+  classNameWrapper = 'ml-6',
+  max,
+  value,
+  onIncrease,
+  onDecrease,
+  onType,
+  ...rest
+}: Props) {
+  const handleChangeQuantityProduct = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let _value = Number(e.target.value)
+    console.log('🚀 ~ handleChangeQuantityProduct ~ _value:', _value)
+    if (max !== undefined && _value > max) {
+      _value = max
+    } else if (_value < 1) {
+      _value = 1
+    }
+    onType && onType(_value)
+  }
+
+  const increase = () => {
+    let _value = Number(value) + 1
+    if (max !== undefined && _value > max) {
+      _value = max
+    }
+    onIncrease && onIncrease(_value)
+  }
+  const decrease = () => {
+    let _value = Number(value) - 1
+    if (_value < 1) {
+      _value = 1
+    }
+    onDecrease && onDecrease(_value)
+  }
+
   return (
     <div className={'flex items-center ml-6 ' + classNameWrapper}>
-      <button className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'>
+      <button
+        onClick={decrease}
+        className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
+      >
         <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'
@@ -26,11 +63,16 @@ export default function QuantityController({ classNameWrapper = 'ml-6', value }:
       </button>
       <InputNumber
         value={value}
+        {...rest}
+        onChange={handleChangeQuantityProduct}
         className=''
         classNameError='hidden'
         classNameInput='h-8 w-14 border-t border-b border-gray-300 p-1 text-center outline-none'
       />
-      <button className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600'>
+      <button
+        onClick={increase}
+        className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600'
+      >
         <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'
