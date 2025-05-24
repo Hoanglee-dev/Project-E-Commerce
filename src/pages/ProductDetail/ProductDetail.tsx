@@ -42,7 +42,7 @@ export default function ProductDetail() {
   }, [product, currentIndexImages])
 
   useEffect(() => {
-    if (product && product.images.length > 0) {
+    if (product && product.images.length > 0 && product.images[0]) {
       setActiveImage(product.images[0])
     }
   }, [product])
@@ -87,11 +87,13 @@ export default function ProductDetail() {
           <div className='grid grid-cols-12 gap-9'>
             <div className='col-span-5'>
               <div className='relative w-full cursor-zoom-in overflow-hidden  pt-[100%] shadow'>
-                <img
-                  src={activeImage}
-                  alt={product.name}
-                  className='absolute top-0 left-0 h-full w-full bg-white object-cover pointer-events-none'
-                />
+                {activeImage ? (
+                  <img
+                    src={activeImage}
+                    alt={product.name}
+                    className='absolute top-0 left-0 h-full w-full bg-white object-cover pointer-events-none'
+                  />
+                ) : null}
               </div>
               <div className='relative mt-4 grid grid-cols-5 gap-1'>
                 <button
