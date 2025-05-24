@@ -1,6 +1,6 @@
-import { createSearchParams, data, Link, useNavigate } from 'react-router-dom'
+import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import Poppover from '../Poppover'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { authApi } from '~/apis/auth.api'
 import { AppContext } from '~/contexts/app.context'
 import { useContext } from 'react'
@@ -8,11 +8,16 @@ import path from '~/constants/path'
 import useQueryConfig, { QueryConfig } from '~/hooks/useQueryConfig'
 import { useForm } from 'react-hook-form'
 import { Schema, schema } from '~/utils/rules'
-import { omit, pick } from 'lodash'
+import { omit } from 'lodash'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { purchasesStatus } from '~/constants/purchase'
+import purchaseApi from '~/apis/purchase.api'
+import { formatCurrency } from '~/utils/utils'
+import noProduct from '../../assets/images/no-product.png'
 
 type FormData = Pick<Schema, 'name'>
 const nameSchema = schema.pick(['name'])
+const MAX_PRODUCT = 5
 export default function Header() {
   const navigate = useNavigate()
   const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
@@ -37,6 +42,13 @@ export default function Header() {
     logoutMutaton.mutate()
   }
 
+  const { data: purchasesInCartData } = useQuery({
+    queryKey: ['purchases', { status: purchasesStatus.productInCart }],
+    queryFn: () => purchaseApi.getListPurchase({ status: purchasesStatus.productInCart }),
+    staleTime: 2 * 60 * 1000
+  })
+
+  const purchasesInCart = purchasesInCartData?.data.data
   const handleSearch = handleSubmit((data) => {
     const config = queryConfig.order
       ? omit(
@@ -184,93 +196,50 @@ export default function Header() {
             <Poppover
               renderPopover={
                 <div className='bg-white relative shadow-sm rounded-sm border border-gray-200 max-w-[400px] text-sm'>
-                  <div className='p-2'>
-                    <div className='text-gray-400 capitalize'>Sản phảm mới thêm</div>
-                    <div className='mt-5'>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            className='w-11 h-11 object-cover'
-                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m1iao3o80klv66@resize_w160_nl.webp'
-                            alt='anh'
-                          />
+                  <div className='p-2 '>
+                    {purchasesInCart ? (
+                      <>
+                        <div className='text-gray-400 capitalize'>Sản phảm mới thêm</div>
+                        <div className='mt-5'>
+                          {purchasesInCart.slice(0, 5).map((purchase) => (
+                            <div className='p-1 flex hover:bg-gray-100'>
+                              <div className='flex-shrink-0'>
+                                <img
+                                  className='w-11 h-11 object-cover'
+                                  src={purchase.product.image}
+                                  alt={purchase.product.name}
+                                />
+                              </div>
+                              <div className='ml-2 flex-grow overflow-hidden'>
+                                <div className='truncate'>{purchase.product.name}</div>
+                              </div>
+                              <div className='ml-2 flex-shrink-0'>
+                                <span className='text-orange'>₫{formatCurrency(purchase.product.price)}</span>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Vòng tay chuỗi 108 hạt trầm hương sánh chìm Sơn Mộc Hương đeo tay nam nữ phong thủy may mắn
-                            tài lộc
-                          </div>
+                        <div className='mt-6 items-center flex justify-between'>
+                          <button className='cursor-pointer capitalize text-sm text-gray-500'>
+                            {purchasesInCart.length > MAX_PRODUCT ? purchasesInCart.length - MAX_PRODUCT : ''} Thêm vào
+                            giỏ hàng
+                          </button>
+                          <button className='cursor-pointer capitalize bg-orange hover:bg-opacity-80 px-4 py-2 rounded-sm text-white '>
+                            Xem giỏ hàng
+                          </button>
                         </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>₫928.000</span>
-                        </div>
+                      </>
+                    ) : (
+                      <div className='flex h-[300px] w-[300px] flex-col items-center justify-center p-2 '>
+                        <img src={noProduct} alt='no purchase' className='h-24 w-24' />
+                        <div className='mt-3 capitalize'>Chưa có sản phẩm</div>
                       </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            className='w-11 h-11 object-cover'
-                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m1iao3o80klv66@resize_w160_nl.webp'
-                            alt='anh'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Vòng tay chuỗi 108 hạt trầm hương sánh chìm Sơn Mộc Hương đeo tay nam nữ phong thủy may mắn
-                            tài lộc
-                          </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>₫928.000</span>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            className='w-11 h-11 object-cover'
-                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m1iao3o80klv66@resize_w160_nl.webp'
-                            alt='anh'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Vòng tay chuỗi 108 hạt trầm hương sánh chìm Sơn Mộc Hương đeo tay nam nữ phong thủy may mắn
-                            tài lộc
-                          </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>₫928.000</span>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            className='w-11 h-11 object-cover'
-                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m1iao3o80klv66@resize_w160_nl.webp'
-                            alt='anh'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Vòng tay chuỗi 108 hạt trầm hương sánh chìm Sơn Mộc Hương đeo tay nam nữ phong thủy may mắn
-                            tài lộc
-                          </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>₫928.000</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='mt-6 items-center flex justify-between'>
-                      <div className='capitalize text-xs text-gray-500'>Thêm vào giỏ hàng</div>
-                      <button className='capitalize bg-orange hover:bg-opacity-80 px-4 py-2 rounded-sm text-white '>
-                        Xem giỏ hàng
-                      </button>
-                    </div>
+                    )}
                   </div>
                 </div>
               }
             >
-              <Link to='/' className='flex justify-end'>
+              {/* <Link to='/' className='flex justify-end relative'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
@@ -284,7 +253,33 @@ export default function Header() {
                     strokeLinejoin='round'
                     d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
                   />
+                  {purchasesInCart && purchasesInCart.length > 0 && (
+                    <span className='absolute top-[-5px] left-[17px] rounded-full bg-white px-[9px] py-[1px] text-xs text-orange '>
+                      {purchasesInCart?.length}
+                    </span>
+                  )}
                 </svg>
+              </Link> */}
+              <Link to='/' className='relative'>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth={1.5}
+                  stroke='currentColor'
+                  className='h-8 w-8 text-white'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
+                  />
+                </svg>
+                {purchasesInCart && purchasesInCart.length > 0 && (
+                  <span className='absolute top-[-5px] left-[17px] rounded-full bg-white px-[9px] py-[1px] text-xs text-orange '>
+                    {purchasesInCart?.length}
+                  </span>
+                )}
               </Link>
             </Poppover>
           </div>

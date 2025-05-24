@@ -19,7 +19,8 @@ export const schema = yup.object({
   name: yup.string().trim().required('Nhập tên sản phẩm là bắt buộc')
 })
 
-export const loginSchema = schema.omit(['confirm_password'])
+export const loginSchema = schema.omit(['confirm_password', 'name'])
+export const registerSchema = schema.omit(['name'])
 export type Schema = yup.InferType<typeof schema>
 export type LoginSchema = yup.InferType<typeof loginSchema>
-export type RegisterSchema = yup.InferType<typeof schema>
+export type RegisterSchema = yup.InferType<typeof registerSchema>

@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import Input from '~/components/Input'
-import { RegisterSchema, schema } from '~/utils/rules'
+import { registerSchema, RegisterSchema } from '~/utils/rules'
 import { useMutation } from '@tanstack/react-query'
 import { authApi } from '~/apis/auth.api'
 import { omit } from 'lodash'
@@ -24,13 +24,14 @@ export default function Register() {
     setError,
     handleSubmit,
     formState: { errors }
-  } = useForm<FormData>({ resolver: yupResolver(schema) })
+  } = useForm<FormData>({ resolver: yupResolver(registerSchema) })
 
   const registerAccountMutation = useMutation({
     mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
   })
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmitRegister = handleSubmit((data) => {
+    console.log(data)
     const body = omit(data, 'confirm_password')
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
@@ -55,13 +56,14 @@ export default function Register() {
       }
     })
   })
+
   return (
     <div className='bg-red'>
       <div className='container py-2.5 '>
         <div className='grid grid-cols-1 px-20 lg:grid-cols-12 lg:py-11'>
           <div className='lg:col-span-7 bg-[url("https://down-vn.img.susercontent.com/file/sg-11134004-7reox-m8yiydanxgiv2e")]'></div>
           <div className=' lg:col-span-5 lg:col-start-8'>
-            <form className='bg-white shadow-sm p-8 rounded' onSubmit={onSubmit} noValidate>
+            <form className='bg-white shadow-sm p-8 rounded' onSubmit={onSubmitRegister} noValidate>
               <h2 className='text-2xl mb-5'>Đăng ký</h2>
               <Input
                 name='email'
@@ -88,7 +90,6 @@ export default function Register() {
               <div className='mt-2'>
                 <Button
                   className='gap-x-2 w-full  py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600 flex justify-center items-center '
-                  type='submit'
                   isloading={registerAccountMutation.isPending}
                   disabled={registerAccountMutation.isPending}
                 >
