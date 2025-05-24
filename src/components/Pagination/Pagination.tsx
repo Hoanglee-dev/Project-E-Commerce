@@ -70,6 +70,7 @@ export default function Pagination({ totalPage, queryConfig }: Props) {
         }
         return (
           <Link
+            key={index}
             to={{
               pathname: path.home,
               search: createSearchParams({ ...queryConfig, page: pageNumber.toString() }).toString()
