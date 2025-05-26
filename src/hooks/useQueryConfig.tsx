@@ -13,7 +13,7 @@ export default function useQueryConfig() {
       page: queryParams.page || '1',
       category: queryParams.category,
       exclude: queryParams.exclude,
-      limit: queryParams.limit || 5,
+      limit: queryParams.limit || 10,
       name: queryParams.name,
       order: queryParams.order,
       price_max: queryParams.price_max,
