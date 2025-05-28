@@ -1,14 +1,14 @@
-import React, { ButtonHTMLAttributes } from 'react'
+import { ButtonHTMLAttributes } from 'react'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isloading?: boolean
 }
 
 export default function Button(props: ButtonProps) {
-  const { isloading, className, disabled, children } = props
+  const { isloading, className, disabled, children, ...rest } = props
   const newClassName = isloading ? className + 'cursor-not-allowed ' : className
   return (
-    <button className={newClassName} disabled={disabled}>
+    <button className={newClassName} disabled={disabled} {...rest}>
       {isloading && (
         <div role='status'>
           <svg
@@ -29,7 +29,7 @@ export default function Button(props: ButtonProps) {
           </svg>
         </div>
       )}
-      {children}
+      <span> {children} </span>
     </button>
   )
 }
