@@ -18,7 +18,6 @@ import { queryClient } from '~/main'
 
 type FormData = Pick<Schema, 'name'>
 const nameSchema = schema.pick(['name'])
-const MAX_PRODUCT = 5
 export default function Header() {
   const navigate = useNavigate()
   const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
@@ -199,7 +198,7 @@ export default function Header() {
               renderPopover={
                 <div className='bg-white relative shadow-sm rounded-sm border border-gray-200 max-w-[400px] text-sm'>
                   <div className='p-2 '>
-                    {purchasesInCart ? (
+                    {purchasesInCart && purchasesInCart.length > 0 ? (
                       <>
                         <div className='text-gray-400 capitalize'>Sản phảm mới thêm</div>
                         <div className='mt-5'>
@@ -223,8 +222,7 @@ export default function Header() {
                         </div>
                         <div className='mt-6 items-center flex justify-between'>
                           <button className='cursor-pointer capitalize text-sm text-gray-500'>
-                            {purchasesInCart.length > MAX_PRODUCT ? purchasesInCart.length - MAX_PRODUCT : ''} Thêm vào
-                            giỏ hàng
+                            {purchasesInCart.length} Thêm vào giỏ hàng
                           </button>
                           <Link
                             to={path.cart}
