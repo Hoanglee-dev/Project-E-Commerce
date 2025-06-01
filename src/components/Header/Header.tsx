@@ -121,7 +121,7 @@ export default function Header() {
               renderPopover={
                 <div className='bg-white shadow-md text-sm'>
                   <Link
-                    to='/profile'
+                    to={path.profile}
                     className=' w-full block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'
                   >
                     Tài khoản của tôi

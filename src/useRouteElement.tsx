@@ -47,15 +47,11 @@ export default function useRouteElement() {
       children: [
         {
           path: path.cart,
-          children: [
-            {
-              element: (
-                <MainLayout>
-                  <Cart />
-                </MainLayout>
-              )
-            }
-          ]
+          element: (
+            <MainLayout>
+              <Cart />
+            </MainLayout>
+          )
         },
         {
           path: path.user,
