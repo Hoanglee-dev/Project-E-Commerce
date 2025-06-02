@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { pick } from 'lodash'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import userApi from '~/apis/user.api'
 import Button from '~/components/Button'
@@ -13,26 +12,35 @@ import { toast } from 'react-toastify'
 import { AppContext } from '~/contexts/app.context'
 import { setProfileUserToLS } from '~/utils/auth'
 import userImage from '../../../../assets/svg/user.svg'
+import Inputfile from '~/components/InputFile'
+import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
+import { ErrorResponse } from '~/types/utils.type'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'avatar' | 'phone' | 'date_of_birth'>
-
+type FormDataError = Omit<FormData, 'date_of_birth'> & {
+  date_of_birth?: string
+}
 const profileSchema = userSchema.pick(['name', 'address', 'avatar', 'phone', 'date_of_birth'])
 
 export default function Profile() {
   const { setProfile } = useContext(AppContext)
+  const [file, setFile] = useState<File>()
+  const previewImage = useMemo(() => {
+    return file ? URL.createObjectURL(file) : ''
+  }, [file])
   const { data: profileData, refetch } = useQuery({
     queryKey: ['user'],
     queryFn: userApi.getProfile,
     staleTime: 5 * 60 * 1000
   })
   const profile = profileData?.data.data
-  console.log('🚀 ~ Profile ~ profile:', profile)
   const {
     register,
     control,
     formState: { errors },
     handleSubmit,
     getValues,
+    setError,
     watch,
     setValue
   } = useForm<FormData>({
@@ -47,7 +55,8 @@ export default function Profile() {
   })
 
   const updateProfileMutation = useMutation({ mutationFn: userApi.updateProfile })
-
+  const uploadAvatarMutation = useMutation({ mutationFn: userApi.uploadAvatar })
+  const avatar = watch('avatar')
   useEffect(() => {
     if (profile) {
       setValue('address', profile.address)
@@ -59,18 +68,40 @@ export default function Profile() {
   }, [profile])
 
   const handleUpdateProfile = handleSubmit(async (data) => {
-    const res = await updateProfileMutation.mutateAsync({
-      ...data,
-      date_of_birth: data.date_of_birth?.toISOString()
-    })
-    setProfile(res.data.data)
-    setProfileUserToLS(res.data.data)
-    refetch()
-    toast.success(res.data.message, {
-      autoClose: 1000,
-      type: 'success'
-    })
+    try {
+      let avatarName = avatar
+      if (file) {
+        const form = new FormData()
+        form.append('image', file)
+        const uploadRes = await uploadAvatarMutation.mutateAsync(form)
+        avatarName = uploadRes.data.data
+        setValue('avatar', avatarName)
+      }
+
+      const res = await updateProfileMutation.mutateAsync({
+        ...data,
+        date_of_birth: data.date_of_birth?.toISOString(),
+        avatar: avatarName
+      })
+      setProfile(res.data.data)
+      setProfileUserToLS(res.data.data)
+      refetch()
+      toast.success(res.data.message, {
+        autoClose: 1000
+      })
+    } catch (error) {
+      if (isAxiosErrorUnprocessableEntity<ErrorResponse<FormDataError>>(error)) {
+        const toastError = error.response?.data.message
+        toast.error(toastError, {
+          autoClose: 1000
+        })
+      }
+    }
   })
+
+  const handleChangeFile = (file?: File) => {
+    setFile(file)
+  }
   return (
     <>
       <div className='rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>
@@ -155,8 +186,9 @@ export default function Profile() {
           <div className='flex justify-center md:w-72 md:border-l md:border-l-gray-200'>
             <div className='flex flex-col items-center'>
               <div className='my-5 h-24 w-24'>
-                <img src={profile?.avatar || userImage} className='h-full w-full rounded-full object-cover' />
+                <img src={previewImage || avatar} className='h-full w-full rounded-full object-cover' />
               </div>
+              <Inputfile onChange={handleChangeFile} />
               <div className='mt-3 text-gray-400'>
                 <div>Dụng lượng file tối đa 1 MB</div>
                 <div>Định dạng:.JPEG, .PNG</div>

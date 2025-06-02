@@ -36,7 +36,6 @@ class HTTP {
           setAccessTokenToLS(this.accessToken)
           setProfileUserToLS(data.data.user)
         } else if (url === path.logout) {
-          console.log('logout http')
           this.accessToken = ''
           clearFromLS()
         }

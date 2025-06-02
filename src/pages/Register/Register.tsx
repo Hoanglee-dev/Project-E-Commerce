@@ -31,7 +31,6 @@ export default function Register() {
   })
 
   const onSubmitRegister = handleSubmit((data) => {
-    console.log(data)
     const body = omit(data, 'confirm_password')
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
@@ -43,9 +42,7 @@ export default function Register() {
         if (isAxiosErrorUnprocessableEntity<ErrorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
           const formError = error.response?.data.data
           if (formError) {
-            console.log('🚀 ~ onSubmit ~ formError:', formError.email)
             Object.keys(formError).forEach((key) => {
-              console.log(key)
               setError(key as keyof Omit<FormData, 'confirm_password'>, {
                 message: formError[key as keyof Omit<FormData, 'confirm_password'>],
                 type: 'Server'
