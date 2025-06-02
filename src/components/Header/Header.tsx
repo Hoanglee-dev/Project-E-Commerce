@@ -15,6 +15,7 @@ import purchaseApi from '~/apis/purchase.api'
 import { formatCurrency } from '~/utils/utils'
 import noProduct from '../../assets/images/no-product.png'
 import { queryClient } from '~/main'
+import userImage from '../../assets/svg/user.svg'
 
 type FormData = Pick<Schema, 'name'>
 const nameSchema = schema.pick(['name'])
@@ -139,11 +140,7 @@ export default function Header() {
               }
             >
               <div className='w-5 h-5 mr-2 flex-shsink-0 ml-6'>
-                <img
-                  src='https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                  alt=''
-                  className='w-full h-full object-cover rounded-full'
-                />
+                <img src={profile?.avatar || userImage} className='w-full  h-full object-cover rounded-full' />
               </div>
               <div className=''>{profile?.email}</div>
             </Poppover>
