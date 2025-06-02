@@ -73,7 +73,6 @@ export default function Cart() {
       const extendedPurchasesObject = keyBy(prev, '_id')
       return (
         purchasesInCart?.map((purchase) => {
-          console.log('🚀 ~ purchasesInCart?.map ~ purchase:', purchase._id)
           const isChoosenPurchaseIdFromLocation = choosenPurchaseIdFromLocation === purchase._id
           return {
             ...purchase,
@@ -118,7 +117,6 @@ export default function Cart() {
   const handleQuantity = (purchaseIndex: number, value: number, enable: boolean) => {
     if (enable) {
       const purchase = extendedPurchases[purchaseIndex]
-      console.log('🚀 ~ handleQuantity ~ purchase:', purchase)
       setExtendedPurchases(
         produce((draft) => {
           draft[purchaseIndex].disable = true

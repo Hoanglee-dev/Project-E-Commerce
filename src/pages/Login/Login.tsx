@@ -40,7 +40,6 @@ export default function Login() {
           const formError = error.response?.data.data
           if (formError) {
             Object.keys(formError).forEach((key) => {
-              console.log(key)
               setError(key as keyof FormData, {
                 message: formError[key as keyof FormData],
                 type: 'Server'

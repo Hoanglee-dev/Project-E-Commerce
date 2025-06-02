@@ -17,7 +17,6 @@ export default function AsideFilter({ categories, queryConfig }: Props) {
   const navigate = useNavigate()
   const { category } = queryConfig
   const handleRemoveAll = () => {
-    console.log('clear')
     navigate({
       pathname: path.home,
       search: createSearchParams(omit(queryConfig, ['category', 'rating_filter'])).toString()
