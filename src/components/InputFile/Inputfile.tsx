@@ -1,11 +1,11 @@
 import { useRef } from 'react'
 import { toast } from 'react-toastify'
+import config from '~/constants/config'
 
 interface Props {
   onChange?: (file?: File) => void
 }
 
-const MAX_SIZE_UPLOAD_AVATAR = 1048576
 export default function Inputfile({ onChange }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -16,7 +16,7 @@ export default function Inputfile({ onChange }: Props) {
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileFromLocal = e.target.files?.[0]
     fileInputRef.current?.setAttribute('value', '')
-    if (fileFromLocal && (fileFromLocal.size >= MAX_SIZE_UPLOAD_AVATAR || !fileFromLocal.type.includes('image'))) {
+    if (fileFromLocal && (fileFromLocal.size >= config.maxSizeUploadAvatar || !fileFromLocal.type.includes('image'))) {
       toast.error(`Dụng lượng file tối đa 1 MB. Định dạng:.JPEG, .PNG`, {
         position: 'top-center',
         autoClose: 1000

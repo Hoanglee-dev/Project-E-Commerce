@@ -96,46 +96,8 @@ export default function AsideFilter({ categories, queryConfig }: Props) {
       </Link>
       <div className='bg-gray-300 h-[1px] my-4' />
       <div className='my-5'>
-        <div className='text-sm font-semibold'>Khoảng giá</div>
-        <form className=''>
-          <div className='flex items-center py-2'>
-            <Input
-              type='text'
-              className='grow'
-              name='from'
-              classNameInput='p-1 w-full outline-none text-xs border bg-white border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-              placeholder='₫ TỪ'
-              classNameError='none'
-            />
-            <div className='mx-0.5 shrink-0 rgba(160, 154, 154, 0.8) '>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth='1.5'
-                stroke='currentColor'
-                className='size-4'
-              >
-                <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
-              </svg>
-            </div>
-            <Input
-              type='text'
-              className='grow'
-              name='from'
-              classNameInput='p-1 w-full outline-none text-xs border bg-white border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-              placeholder='₫ ĐẾN'
-              classNameError='none'
-            />
-          </div>
-          <Button className='w-full p-2 uppercase bg-orange text-white text-sm hover:bg-orange/80 flex justify-center items-center'>
-            Áp dụng
-          </Button>
-        </form>
-        <div className='bg-gray-300 h-[1px] my-4' />
         <div className='text-sm font-semibold'>Đánh giá</div>
         <RatingStar queryConfig={queryConfig} />
-
         <div className='bg-gray-300 h-[1px] my-4' />
         <button
           onClick={handleRemoveAll}

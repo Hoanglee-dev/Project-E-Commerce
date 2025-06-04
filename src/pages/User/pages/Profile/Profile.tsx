@@ -11,9 +11,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
 import { AppContext } from '~/contexts/app.context'
 import { setProfileUserToLS } from '~/utils/auth'
-import userImage from '../../../../assets/svg/user.svg'
 import Inputfile from '~/components/InputFile'
-import { isAxiosErrorUnprocessableEntity } from '~/utils/utils'
+import { getAvatarUrl, isAxiosErrorUnprocessableEntity } from '~/utils/utils'
 import { ErrorResponse } from '~/types/utils.type'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'avatar' | 'phone' | 'date_of_birth'>
@@ -23,24 +22,22 @@ type FormDataError = Omit<FormData, 'date_of_birth'> & {
 const profileSchema = userSchema.pick(['name', 'address', 'avatar', 'phone', 'date_of_birth'])
 
 export default function Profile() {
-  const { setProfile } = useContext(AppContext)
+  const { profile, setProfile } = useContext(AppContext)
   const [file, setFile] = useState<File>()
   const previewImage = useMemo(() => {
     return file ? URL.createObjectURL(file) : ''
   }, [file])
+
   const { data: profileData, refetch } = useQuery({
     queryKey: ['user'],
     queryFn: userApi.getProfile,
     staleTime: 5 * 60 * 1000
   })
-  const profile = profileData?.data.data
   const {
     register,
     control,
     formState: { errors },
     handleSubmit,
-    getValues,
-    setError,
     watch,
     setValue
   } = useForm<FormData>({
@@ -57,15 +54,20 @@ export default function Profile() {
   const updateProfileMutation = useMutation({ mutationFn: userApi.updateProfile })
   const uploadAvatarMutation = useMutation({ mutationFn: userApi.uploadAvatar })
   const avatar = watch('avatar')
+  const profileFromApi = profileData?.data.data
+
   useEffect(() => {
-    if (profile) {
-      setValue('address', profile.address)
-      setValue('avatar', profile.avatar)
-      setValue('name', profile.name)
-      setValue('phone', profile.phone)
-      setValue('date_of_birth', profile.date_of_birth ? new Date(profile.date_of_birth) : new Date(1990, 0, 1))
+    if (profileFromApi) {
+      setValue('address', profileFromApi.address)
+      setValue('avatar', profileFromApi.avatar)
+      setValue('name', profileFromApi.name)
+      setValue('phone', profileFromApi.phone)
+      setValue(
+        'date_of_birth',
+        profileFromApi.date_of_birth ? new Date(profileFromApi.date_of_birth) : new Date(1990, 0, 1)
+      )
     }
-  }, [profile])
+  }, [profileFromApi])
 
   const handleUpdateProfile = handleSubmit(async (data) => {
     try {
@@ -186,7 +188,10 @@ export default function Profile() {
           <div className='flex justify-center md:w-72 md:border-l md:border-l-gray-200'>
             <div className='flex flex-col items-center'>
               <div className='my-5 h-24 w-24'>
-                <img src={previewImage || avatar} className='h-full w-full rounded-full object-cover' />
+                <img
+                  src={previewImage || getAvatarUrl(profile?.avatar)}
+                  className='h-full w-full rounded-full object-cover'
+                />
               </div>
               <Inputfile onChange={handleChangeFile} />
               <div className='mt-3 text-gray-400'>

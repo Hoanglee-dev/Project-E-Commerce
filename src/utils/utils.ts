@@ -1,4 +1,6 @@
 import axios, { AxiosError, HttpStatusCode } from 'axios'
+import userImage from '../assets/svg/user.svg'
+import config from '~/constants/config'
 
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
   return axios.isAxiosError(error)
@@ -23,3 +25,11 @@ export function formatNumberToSocialStyle(value: number) {
 }
 
 export const rateSale = (original: number, sale: number) => Math.round(((original - sale) / original) * 100) + '%'
+
+export const getAvatarUrl = (avatarName?: string) => {
+  if (avatarName === undefined || avatarName == `${config.baseUrl}images/${undefined}`) {
+    return userImage
+  } else {
+    return avatarName
+  }
+}
