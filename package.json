@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://hoanglee-dev.github.io/",
+  "homepage": "https://hoanglee-dev.github.io/Project-E-Commerce",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
