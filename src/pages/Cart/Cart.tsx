@@ -161,7 +161,7 @@ export default function Cart() {
                           type='checkbox'
                           className='h-5 w-5 accent-orange'
                           checked={isAllChecked}
-                          onClick={handleAllCheck}
+                          onChange={handleAllCheck}
                         />
                       </div>
                       <div className='flex-grow text-black'>Sản phẩm</div>
@@ -265,7 +265,7 @@ export default function Cart() {
                     type='checkbox'
                     className='h-5 w-5 accent-orange cursor-pointer'
                     checked={isAllChecked}
-                    onClick={handleAllCheck}
+                    onChange={handleAllCheck}
                   />
                 </div>
                 <button onClick={handleAllCheck} className='mx-3 border-none bg-none cursor-pointer hover:text-orange'>

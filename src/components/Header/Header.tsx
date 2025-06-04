@@ -127,7 +127,10 @@ export default function Header() {
                   >
                     Tài khoản của tôi
                   </Link>
-                  <Link to='/' className='  w-full block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
+                  <Link
+                    to={path.historyPurchase}
+                    className='  w-full block py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'
+                  >
                     Đơn mua
                   </Link>
                   <button
