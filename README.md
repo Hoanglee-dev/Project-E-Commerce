@@ -1,50 +1,71 @@
-# React + TypeScript + Vite
+# Shopee Clone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Overview
 
-Currently, two official plugins are available:
+**Shopee Clone** is an e-commerce web application developed by **Lê Vũ Hoàng**, replicating the core functionalities of a real-world shopping platform.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Key features include:
 
-## Expanding the ESLint configuration
+- User registration, login, and authentication
+- Product listing with pagination, filtering, sorting, and searching
+- Product detail view
+- Shopping cart and checkout flow
+- User profile update with avatar upload
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+The app is built with **React 19**, **TypeScript**, and **Vite** for a modern and efficient development environment.  
+Forms are handled using **React Hook Form** + **Yup**, async state is managed by **React Query**, and the UI is fully responsive thanks to **Tailwind CSS 4**.  
+API communication is handled via **Axios**.
 
-- Configure the top-level `parserOptions` property like this:
+---
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🚀 Tech Stack
+
+- **React 19**
+- **Vite** (Build tool)
+- **TypeScript**
+- **Tailwind CSS 4**
+- **React Query 5** (Data fetching & caching)
+- **React Hook Form** + **Yup** (Form management & validation)
+- **React Router DOM 7**
+- **React Toastify** (Toast notifications)
+- **Axios** (HTTP client)
+- **ESLint** + **Prettier** (Code linting & formatting)
+
+---
+
+## Core Features
+
+| Feature                   | HTTP Route                       | Description                                             |
+| ------------------------- | -------------------------------- | ------------------------------------------------------- |
+| Register                  | `POST /register`                 | Create a new user account                               |
+| Login                     | `POST /login`                    | Receive access token                                    |
+| Logout                    | `POST /logout`                   | Invalidate user session                                 |
+| Get current user info     | `GET /me`                        | Returns current user's data                             |
+| List products             | `GET /products`                  | Supports filtering, searching, sorting                  |
+| Product detail            | `GET /products/:id`              | View product details by ID                              |
+| Get product categories    | `GET /categories`                | Used for filtering products                             |
+| Add to cart               | `POST /purchases/add-to-cart`    | Add product to cart (with `product_id` and `buy_count`) |
+| Get cart / orders         | `GET /purchases?status=...`      | `-1`: cart, `0`: all, `1~5`: specific order status      |
+| Update cart item quantity | `PUT /purchases/update-purchase` | Modify quantity of items in cart                        |
+| Remove from cart          | `DELETE /purchases`              | Remove items by `purchase_id` array                     |
+| Checkout                  | `POST /purchases/buy-products`   | Submit an order with selected products                  |
+| Update user profile       | `PUT /user`                      | Update name, password, avatar, etc.                     |
+| Upload avatar             | `POST /user/upload-avatar`       | Upload profile picture using `FormData`                 |
+
+---
+
+## 📦 Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Author
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+_Lê Vũ Hoàng_
+Frontend Developer
+📧 Email: levuhoangks@gmail.com
