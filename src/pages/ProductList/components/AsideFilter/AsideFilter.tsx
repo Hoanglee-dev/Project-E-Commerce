@@ -1,6 +1,4 @@
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
-import Button from '~/components/Button'
-import Input from '~/components/Input'
 import RatingStar from '../RatingStar/Ratingstar'
 import { Category } from '~/types/category.type'
 import { QueryConfig } from '~/hooks/useQueryConfig'

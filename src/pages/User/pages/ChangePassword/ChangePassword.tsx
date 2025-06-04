@@ -17,7 +17,6 @@ export default function ChangePassword() {
   const {
     register,
     formState: { errors },
-    setError,
     handleSubmit,
     reset
   } = useForm<FormData>({
