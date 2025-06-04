@@ -25,9 +25,9 @@ export const userSchema = yup.object({
   address: yup.string().max(160, 'Độ dài tối đa là 160 ký tự'),
   avatar: yup.string().max(1000, 'Độ dài tối đa là 1000 ký tự'),
   date_of_birth: yup.date().max(new Date(), 'Hãy chọn một ngày trong quá khứ'),
-  password: schema.fields['password'],
-  new_password: schema.fields['password'],
-  confirm_password: schema.fields['confirm_password']
+  password: yup.string().min(6, 'Độ dài từ 6 - 60 kí tự').max(160, 'Độ dài từ 6 - 60 kí tự'),
+  new_password: yup.string().min(6, 'Độ dài từ 6 - 60 kí tự').max(160, 'Độ dài từ 6 - 60 kí tự'),
+  confirm_password: yup.string().oneOf([yup.ref('new_password')], 'Nhập lại password không khớp')
 })
 
 export const loginSchema = schema.omit(['confirm_password', 'name'])
